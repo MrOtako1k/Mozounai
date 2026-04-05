@@ -22,7 +22,7 @@
     .nav-wa{display:inline-flex;align-items:center;gap:6px;background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.3);color:#4cd97a !important;font-size:11px;letter-spacing:2px;padding:6px 14px;border-radius:20px;text-decoration:none;transition:all .3s}
     .nav-wa:hover{background:rgba(37,211,102,.22) !important}
 
-    .marquee-wrap{overflow:hidden;background:rgba(201,168,76,.05);border-bottom:1px solid rgba(201,168,76,.1);padding:10px 0;position:fixed;top:57px;left:0;right:0;z-index:99}
+    .marquee-wrap{overflow:hidden;background:rgba(201,168,76,.05);border-bottom:1px solid rgba(201,168,76,.1);padding:10px 0;position:fixed;top:91px;left:0;right:0;z-index:98}
     .marquee-inner{display:flex;gap:48px;white-space:nowrap;animation:marquee 22s linear infinite;width:max-content}
     .marquee-inner span{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);opacity:.65}
     @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
@@ -114,6 +114,10 @@
   </div>
 </nav>
 
+
+<!-- PROMO BAR -->
+<div id="promoBar" style="display:none;text-align:center;background:var(--gold);color:#000;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:700;padding:9px 20px;position:fixed;top:57px;left:0;right:0;z-index:100;letter-spacing:1px"></div>
+
 <div class="marquee-wrap">
   <div class="marquee-inner">
     <span>✦ توصيل مجاني لجميع المدن</span>
@@ -154,7 +158,7 @@
 <div class="delivery-strip reveal">
   <div class="delivery-grid">
     <div class="delivery-item"><div class="d-icon">🚚</div><h4>توصيل مجاني</h4><p>لجميع المدن المغربية</p></div>
-    <div class="delivery-item"><div class="d-icon">⏰</div><h4>سريع جداً</h4><p>التوصل خلال 24 إلى 48 ساعة</p></div>
+    <div class="delivery-item"><div class="d-icon">⏰</div><h4>سريع جداً</h4><p>التوصل خلال <span id="deliveryDaysVal">24-48 ساعة</span></p></div>
     <div class="delivery-item"><div class="d-icon">📦</div><h4>دفع عند الاستلام</h4><p>قلبيها على راحتك وخلصي ملي توصلك</p></div>
     <div class="delivery-item"><div class="d-icon">✋</div><h4>صنع يدوي</h4><p>كل قطعة مصنوعة بعناية واتقان</p></div>
   </div>
@@ -179,7 +183,7 @@
 
 <footer>
   <a href="admin.html">⚙ إدارة</a>
-  <span>✦ Mozounai ✦ المغرب</span>
+  <span>✦ Mozounai ✦ المغرب</span><br/><span style="color:rgba(255,255,255,.1)" id="footerNote"></span>
 </footer>
 
 <script>
@@ -190,6 +194,7 @@ const API_URL      = `https://api.github.com/repos/${GITHUB_REPO}/contents/${DAT
 
 const DEFAULT_DATA = {
   brandName:"Mozounai", phone:"0614130355", heroTagline:"أناقة مغربية أصيلة",
+  promoBadge:"", deliveryDays:"24-48", footerNote:"صنع يدوي بالمغرب",
   products:[{
     id:1, name:"موزون أنيق بالترتر",
     desc:"موزون جوج متر وزيادة، مصنوع يدوياً بخيوط فاخرة وترتر فضي لامع",
@@ -232,6 +237,25 @@ function renderPage(d) {
   const mainWa = buildWaLink(d.phone, d.brandName, null, null);
   document.getElementById('waBtn').href = mainWa;
   document.getElementById('navWa').href = mainWa;
+
+  // ── promoBadge ──
+  const promoBar = document.getElementById('promoBar');
+  if(d.promoBadge && d.promoBadge.trim()) {
+    promoBar.textContent = d.promoBadge;
+    promoBar.style.display = 'block';
+    document.querySelector('.marquee-wrap').style.top = '91px';
+  } else {
+    promoBar.style.display = 'none';
+    document.querySelector('.marquee-wrap').style.top = '57px';
+  }
+
+  // ── deliveryDays ──
+  const delivEl = document.getElementById('deliveryDaysVal');
+  if(delivEl) delivEl.textContent = (d.deliveryDays||'24-48') + ' ساعة';
+
+  // ── footerNote ──
+  const fnEl = document.getElementById('footerNote');
+  if(fnEl) fnEl.textContent = d.footerNote || '';
 
   const grid = document.getElementById('productsGrid');
   grid.innerHTML = '';
