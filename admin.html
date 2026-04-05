@@ -14,12 +14,58 @@
     *{margin:0;padding:0;box-sizing:border-box}
     body{background:var(--black);color:var(--white);font-family:'Tajawal',sans-serif;min-height:100vh}
 
+    /* ══ LOGIN SCREEN ══ */
+    #loginScreen{
+      position:fixed;inset:0;z-index:1000;
+      background:var(--black);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      padding:24px;
+    }
+    #loginScreen.hidden{display:none}
+    .login-dots{position:absolute;inset:0;background-image:radial-gradient(rgba(201,168,76,.07) 1px,transparent 1px);background-size:30px 30px;pointer-events:none}
+    .login-glow{position:absolute;top:30%;left:50%;transform:translate(-50%,-50%);width:400px;height:400px;background:radial-gradient(circle,rgba(201,168,76,.08) 0%,transparent 70%);pointer-events:none}
+    .login-box{position:relative;z-index:2;width:100%;max-width:380px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:6px;padding:40px 32px;backdrop-filter:blur(12px)}
+    .login-brand{font-family:'Cormorant Garamond',serif;font-size:36px;font-style:italic;font-weight:300;background:linear-gradient(135deg,var(--gold-light),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:center;margin-bottom:6px}
+    .login-subtitle{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--muted);text-align:center;margin-bottom:32px}
+    .login-field{margin-bottom:18px}
+    .login-field label{display:block;font-size:12px;color:var(--muted);margin-bottom:8px;letter-spacing:1px}
+    .login-field input{
+      width:100%;background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.1);border-radius:3px;
+      color:var(--white);font-family:'Tajawal',sans-serif;font-size:15px;
+      padding:13px 16px;outline:none;transition:border-color .2s;
+      letter-spacing:2px;
+    }
+    .login-field input:focus{border-color:rgba(201,168,76,.5)}
+    .login-btn{
+      width:100%;background:var(--gold);color:var(--black);
+      font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;
+      padding:14px;border:none;border-radius:3px;cursor:pointer;
+      letter-spacing:2px;transition:all .25s;margin-top:8px;
+    }
+    .login-btn:hover{background:var(--gold-light)}
+    .login-err{
+      color:var(--red);font-size:12px;text-align:center;
+      margin-top:12px;min-height:18px;letter-spacing:1px;
+      opacity:0;transition:opacity .3s;
+    }
+    .login-err.show{opacity:1}
+    .login-footer{text-align:center;margin-top:24px;font-size:11px;color:rgba(255,255,255,.2);letter-spacing:2px}
+    .shake{animation:shake .4s ease}
+    @keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+
+    /* ══ ADMIN UI ══ */
+    #adminUI{display:none}
+    #adminUI.show{display:block}
+
     .topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;background:var(--charcoal);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50}
     .topbar-brand{font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;font-weight:300;background:linear-gradient(135deg,var(--gold-light),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
     .topbar-right{display:flex;align-items:center;gap:14px}
     .badge-admin{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,168,76,.3);padding:4px 12px;border-radius:20px}
     .btn-preview{display:inline-flex;align-items:center;gap:7px;font-family:'Tajawal',sans-serif;font-size:12px;color:var(--black);background:var(--gold);border:none;padding:8px 18px;border-radius:3px;cursor:pointer;font-weight:700;letter-spacing:1px;text-decoration:none;transition:all .2s}
     .btn-preview:hover{background:var(--gold-light)}
+    .btn-logout{display:inline-flex;align-items:center;gap:6px;font-family:'Tajawal',sans-serif;font-size:12px;color:var(--red);background:rgba(224,85,85,.1);border:1px solid rgba(224,85,85,.3);padding:7px 14px;border-radius:3px;cursor:pointer;transition:all .2s}
+    .btn-logout:hover{background:rgba(224,85,85,.2)}
 
     .admin-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 57px)}
     .sidebar{background:var(--charcoal);border-left:1px solid var(--border);padding:28px 0}
@@ -84,6 +130,9 @@
     .spin{animation:spin .8s linear infinite}
     @keyframes spin{to{transform:rotate(360deg)}}
 
+    /* Password change card */
+    .pw-hint{font-size:11px;color:var(--muted);margin-top:6px;line-height:1.7}
+
     @media(max-width:600px){
       .admin-layout{grid-template-columns:1fr}
       .sidebar{display:flex;flex-wrap:wrap;padding:12px;gap:4px;border-left:none;border-bottom:1px solid var(--border)}
@@ -96,6 +145,26 @@
 </head>
 <body>
 
+<!-- ══════════════ LOGIN SCREEN ══════════════ -->
+<div id="loginScreen">
+  <div class="login-dots"></div>
+  <div class="login-glow"></div>
+  <div class="login-box">
+    <div class="login-brand">Mozounai</div>
+    <div class="login-subtitle">لوحة الإدارة — دخول خاص</div>
+    <div class="login-field">
+      <label>كلمة السر</label>
+      <input type="password" id="pwInput" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"/>
+    </div>
+    <button class="login-btn" onclick="doLogin()">🔓 دخول</button>
+    <div class="login-err" id="loginErr">❌ كلمة السر غلط — حاول مرة أخرى</div>
+    <div class="login-footer">✦ Admin Access Only ✦</div>
+  </div>
+</div>
+
+<!-- ══════════════ ADMIN UI ══════════════ -->
+<div id="adminUI">
+
 <div class="topbar">
   <span class="topbar-brand">Mozounai</span>
   <div class="topbar-right">
@@ -105,6 +174,7 @@
     </span>
     <span class="badge-admin">⚙ Admin</span>
     <a class="btn-preview" href="index.html" target="_blank">👁 معاينة</a>
+    <button class="btn-logout" onclick="doLogout()">🚪 خروج</button>
   </div>
 </div>
 
@@ -116,6 +186,7 @@
     <div class="sidebar-item" data-panel="general">⚙️ الإعدادات</div>
     <div class="sidebar-sep"></div>
     <p class="sidebar-section">أدوات</p>
+    <div class="sidebar-item" data-panel="security">🔒 الأمان</div>
     <div class="sidebar-item" data-panel="reset">🔄 إعادة تعيين</div>
   </aside>
 
@@ -161,6 +232,36 @@
       <button class="btn btn-gold" id="saveGeneralBtn">💾 حفظ على GitHub</button>
     </div>
 
+    <!-- SECURITY -->
+    <div class="panel" id="panel-security">
+      <h2 class="panel-title">الأمان <span>والحماية</span></h2>
+      <div class="card">
+        <p class="card-title">تغيير كلمة سر الأدمن</p>
+        <div class="field">
+          <label>كلمة السر الحالية</label>
+          <input type="password" id="oldPw" placeholder="••••••••"/>
+        </div>
+        <div class="field">
+          <label>كلمة السر الجديدة</label>
+          <input type="password" id="newPw" placeholder="••••••••"/>
+          <p class="pw-hint">⚠️ كلمة السر تتحفظ في المتصفح فقط — ديما كون عندك نسخة احتياطية</p>
+        </div>
+        <div class="field">
+          <label>تأكيد كلمة السر الجديدة</label>
+          <input type="password" id="confirmPw" placeholder="••••••••"/>
+        </div>
+        <button class="btn btn-gold" onclick="changePassword()">🔐 تغيير كلمة السر</button>
+      </div>
+      <div class="card">
+        <p class="card-title">حالة الحماية</p>
+        <p style="font-size:13px;color:var(--muted);line-height:2">
+          ✅ لوحة الأدمن محمية بكلمة سر<br/>
+          ✅ العلمة الحمراء ظاهرة في الموقع<br/>
+          ✅ الجلسة تنتهي بعد إغلاق المتصفح
+        </p>
+      </div>
+    </div>
+
     <!-- RESET -->
     <div class="panel" id="panel-reset">
       <h2 class="panel-title">إعادة <span>تعيين</span></h2>
@@ -176,9 +277,65 @@
   </main>
 </div>
 
+</div><!-- end adminUI -->
+
 <div class="toast" id="toast"></div>
 
 <script>
+// ══════════════════════════════════════
+// PASSWORD SYSTEM
+// ══════════════════════════════════════
+const DEFAULT_PASSWORD = "mozounai2024"; // كلمة السر الافتراضية
+
+function getPassword() {
+  return localStorage.getItem('admin_pw') || DEFAULT_PASSWORD;
+}
+
+function doLogin() {
+  const val = document.getElementById('pwInput').value;
+  if(val === getPassword()) {
+    sessionStorage.setItem('admin_auth', '1');
+    document.getElementById('loginScreen').classList.add('hidden');
+    document.getElementById('adminUI').classList.add('show');
+    initAdmin();
+  } else {
+    const box = document.getElementById('loginBox');
+    document.getElementById('loginErr').classList.add('show');
+    document.getElementById('pwInput').classList.add('shake');
+    document.getElementById('pwInput').value = '';
+    setTimeout(()=>document.getElementById('pwInput').classList.remove('shake'),500);
+    setTimeout(()=>document.getElementById('loginErr').classList.remove('show'),3000);
+  }
+}
+
+function doLogout() {
+  sessionStorage.removeItem('admin_auth');
+  document.getElementById('adminUI').classList.remove('show');
+  document.getElementById('loginScreen').classList.remove('hidden');
+  document.getElementById('pwInput').value = '';
+}
+
+function changePassword() {
+  const old = document.getElementById('oldPw').value;
+  const nw  = document.getElementById('newPw').value;
+  const cnf = document.getElementById('confirmPw').value;
+  if(old !== getPassword()) { showToast('❌ كلمة السر الحالية غلط','error'); return; }
+  if(nw.length < 6) { showToast('❌ كلمة السر قصيرة — 6 حروف على الأقل','error'); return; }
+  if(nw !== cnf) { showToast('❌ التأكيد ما كيطابقش','error'); return; }
+  localStorage.setItem('admin_pw', nw);
+  document.getElementById('oldPw').value = '';
+  document.getElementById('newPw').value = '';
+  document.getElementById('confirmPw').value = '';
+  showToast('✓ تم تغيير كلمة السر!','success');
+}
+
+// Check session on load
+if(sessionStorage.getItem('admin_auth') === '1') {
+  document.getElementById('loginScreen').classList.add('hidden');
+  document.getElementById('adminUI').classList.add('show');
+  initAdmin();
+}
+
 // ══════════════════════════════════════
 // GITHUB CONFIG
 // ══════════════════════════════════════
@@ -198,31 +355,25 @@ const DEFAULT_DATA = {
 };
 
 let data = structuredClone(DEFAULT_DATA);
-let fileSHA = null; // GitHub needs the SHA to update a file
+let fileSHA = null;
+let adminInitialized = false;
 
-// ── TOAST ──
 function showToast(msg, type='success') {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.className = `toast ${type} show`;
-  setTimeout(()=>t.classList.remove('show'), 3000);
+  setTimeout(()=>t.classList.remove('show'), 3200);
 }
-
 function setSaving(show) {
   document.getElementById('savingIndicator').classList.toggle('show', show);
 }
 
-// ── FETCH FROM GITHUB ──
 async function fetchData() {
   try {
     const res = await fetch(API_URL + '?t=' + Date.now(), {
       headers:{ 'Authorization':'token '+GITHUB_TOKEN, 'Accept':'application/vnd.github.v3+json' }
     });
-    if (res.status === 404) {
-      // file doesn't exist yet, use defaults and create it
-      await saveToGitHub(DEFAULT_DATA, null);
-      return DEFAULT_DATA;
-    }
+    if (res.status === 404) { await saveToGitHub(DEFAULT_DATA, null); return DEFAULT_DATA; }
     if (!res.ok) throw new Error('fetch failed');
     const file = await res.json();
     fileSHA = file.sha;
@@ -233,53 +384,67 @@ async function fetchData() {
   }
 }
 
-// ── SAVE TO GITHUB ──
 async function saveToGitHub(d, sha) {
   setSaving(true);
   try {
     const content = btoa(unescape(encodeURIComponent(JSON.stringify(d, null, 2))));
-    const body = {
-      message: 'تحديث بيانات الموقع 🛍',
-      content: content,
-      ...(sha ? { sha } : {})
-    };
+    const body = { message:'تحديث بيانات الموقع 🛍', content, ...(sha?{sha}:{}) };
     const res = await fetch(API_URL, {
-      method: 'PUT',
-      headers:{
-        'Authorization':'token '+GITHUB_TOKEN,
-        'Accept':'application/vnd.github.v3+json',
-        'Content-Type':'application/json'
-      },
+      method:'PUT',
+      headers:{ 'Authorization':'token '+GITHUB_TOKEN, 'Accept':'application/vnd.github.v3+json', 'Content-Type':'application/json' },
       body: JSON.stringify(body)
     });
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.message);
-    }
+    if (!res.ok) { const err=await res.json(); throw new Error(err.message); }
     const result = await res.json();
     fileSHA = result.content.sha;
     setSaving(false);
-    showToast('✓ تم الحفظ على GitHub!', 'success');
+    showToast('✓ تم الحفظ على GitHub!','success');
     renderOverview(d);
     return true;
   } catch(e) {
     setSaving(false);
-    showToast('❌ فشل الحفظ: ' + e.message, 'error');
+    showToast('❌ فشل الحفظ: '+e.message,'error');
     return false;
   }
 }
 
 // ── SIDEBAR ──
-document.querySelectorAll('.sidebar-item').forEach(item=>{
-  item.addEventListener('click',()=>{
-    document.querySelectorAll('.sidebar-item').forEach(i=>i.classList.remove('active'));
-    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-    item.classList.add('active');
-    document.getElementById('panel-'+item.dataset.panel).classList.add('active');
-    if(item.dataset.panel==='products') renderProductsList();
-    if(item.dataset.panel==='general') fillGeneral();
+function initAdmin() {
+  if(adminInitialized) return;
+  adminInitialized = true;
+
+  document.querySelectorAll('.sidebar-item').forEach(item=>{
+    item.addEventListener('click',()=>{
+      document.querySelectorAll('.sidebar-item').forEach(i=>i.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+      item.classList.add('active');
+      document.getElementById('panel-'+item.dataset.panel).classList.add('active');
+      if(item.dataset.panel==='products') renderProductsList();
+      if(item.dataset.panel==='general') fillGeneral();
+    });
   });
-});
+
+  document.getElementById('addProductBtn').addEventListener('click',()=>{
+    data.products.push({id:Date.now(),name:'منتج جديد',desc:'وصف المنتج',badge:'',image:'',sizes:[{label:'الحجم',price:'100'}]});
+    saveToGitHub(data,fileSHA).then(ok=>{ if(ok) renderProductsList(); });
+  });
+
+  document.getElementById('saveGeneralBtn').addEventListener('click',()=>{
+    data.brandName   = document.getElementById('gBrandName').value;
+    data.heroTagline = document.getElementById('gTagline').value;
+    data.phone       = document.getElementById('gPhone').value;
+    saveToGitHub(data,fileSHA);
+  });
+
+  document.getElementById('resetBtn').addEventListener('click',()=>{
+    if(confirm('واش متأكد؟ هذا مرجعش!')){
+      data=structuredClone(DEFAULT_DATA);
+      saveToGitHub(data,fileSHA).then(ok=>{ if(ok){ renderProductsList(); fillGeneral(); } });
+    }
+  });
+
+  fetchData().then(d=>{ data=d; renderOverview(d); });
+}
 
 // ── OVERVIEW ──
 function renderOverview(d) {
@@ -288,12 +453,12 @@ function renderOverview(d) {
     <div class="stat-card"><div class="stat-val">${d.products.reduce((a,p)=>a+p.sizes.length,0)}</div><div class="stat-lbl">حجم</div></div>
     <div class="stat-card"><div class="stat-val" style="font-size:18px;margin-top:4px">${d.brandName}</div><div class="stat-lbl">البراند</div></div>
   `;
-  document.getElementById('lastSaved').textContent = 'SHA: ' + (fileSHA ? fileSHA.slice(0,8)+'...' : 'جديد');
+  document.getElementById('lastSaved').textContent='SHA: '+(fileSHA?fileSHA.slice(0,8)+'...':'جديد');
 }
 
 // ── PRODUCTS ──
 function renderProductsList() {
-  const list = document.getElementById('productsList');
+  const list=document.getElementById('productsList');
   list.innerHTML='';
   data.products.forEach((p,pi)=>{
     const div=document.createElement('div');
@@ -330,7 +495,7 @@ function renderProductsList() {
     list.appendChild(div);
     renderSizes(pi);
   });
-  list.addEventListener('click', handleProductAction);
+  list.addEventListener('click',handleProductAction);
 }
 
 function renderSizes(pi) {
@@ -357,22 +522,18 @@ function handleProductAction(e) {
     const body=document.getElementById(`pb-${pi}`);
     body.classList.toggle('open');
     btn.textContent=body.classList.contains('open')?'✖ إغلاق':'✏️ تعديل';
-  }
-  else if(action==='delete'){
+  } else if(action==='delete'){
     if(confirm('تحذف هذا المنتج؟')){
       data.products.splice(pi,1);
-      saveToGitHub(data, fileSHA).then(ok=>{ if(ok) renderProductsList(); });
+      saveToGitHub(data,fileSHA).then(ok=>{ if(ok) renderProductsList(); });
     }
-  }
-  else if(action==='addsize'){
+  } else if(action==='addsize'){
     data.products[pi].sizes.push({label:'حجم جديد',price:'0'});
     renderSizes(pi);
-  }
-  else if(action==='delsize'){
+  } else if(action==='delsize'){
     data.products[pi].sizes.splice(si,1);
     renderSizes(pi);
-  }
-  else if(action==='saveproduct'){
+  } else if(action==='saveproduct'){
     data.products[pi].name  = document.getElementById(`p-name-${pi}`).value;
     data.products[pi].badge = document.getElementById(`p-badge-${pi}`).value;
     data.products[pi].desc  = document.getElementById(`p-desc-${pi}`).value;
@@ -381,42 +542,17 @@ function handleProductAction(e) {
       label: document.getElementById(`s-lbl-${pi}-${si2}`)?.value||s.label,
       price: document.getElementById(`s-price-${pi}-${si2}`)?.value||s.price
     }));
-    document.querySelector(`[data-pi="${pi}"] .product-item-name`).textContent = data.products[pi].name;
-    saveToGitHub(data, fileSHA);
+    document.querySelector(`[data-pi="${pi}"] .product-item-name`).textContent=data.products[pi].name;
+    saveToGitHub(data,fileSHA);
   }
 }
 
-document.getElementById('addProductBtn').addEventListener('click',()=>{
-  data.products.push({id:Date.now(),name:'منتج جديد',desc:'وصف المنتج',badge:'',image:'',sizes:[{label:'الحجم',price:'100'}]});
-  saveToGitHub(data, fileSHA).then(ok=>{ if(ok) renderProductsList(); });
-});
-
 // ── GENERAL ──
-function fillGeneral(){
+function fillGeneral() {
   document.getElementById('gBrandName').value = data.brandName;
   document.getElementById('gTagline').value   = data.heroTagline;
   document.getElementById('gPhone').value     = data.phone;
 }
-document.getElementById('saveGeneralBtn').addEventListener('click',()=>{
-  data.brandName   = document.getElementById('gBrandName').value;
-  data.heroTagline = document.getElementById('gTagline').value;
-  data.phone       = document.getElementById('gPhone').value;
-  saveToGitHub(data, fileSHA);
-});
-
-// ── RESET ──
-document.getElementById('resetBtn').addEventListener('click',()=>{
-  if(confirm('واش متأكد؟ هذا مرجعش!')){
-    data = structuredClone(DEFAULT_DATA);
-    saveToGitHub(data, fileSHA).then(ok=>{ if(ok) { renderProductsList(); fillGeneral(); } });
-  }
-});
-
-// ── INIT ──
-fetchData().then(d=>{
-  data=d;
-  renderOverview(d);
-});
 </script>
 </body>
 </html>
