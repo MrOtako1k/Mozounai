@@ -1,281 +1,143 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Mozounai — لوحة الإدارة</title>
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Cormorant+Garamond:ital,wght@0,300;1,300&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Cormorant+Garamond:ital,wght@0,300;1,300&display=swap" rel="stylesheet"/>
   <style>
-    :root {
-      --gold: #c9a84c;
-      --gold-light: #e8c97a;
-      --black: #080808;
-      --charcoal: #111;
-      --panel: #161616;
-      --border: rgba(201,168,76,0.18);
-      --white: #fdfaf4;
-      --muted: rgba(255,255,255,0.45);
-      --red: #e05555;
-      --green: #4caf7d;
+    :root{
+      --gold:#c9a84c;--gold-light:#e8c97a;--black:#080808;
+      --charcoal:#111;--panel:#161616;--border:rgba(201,168,76,.18);
+      --white:#fdfaf4;--muted:rgba(255,255,255,.45);--red:#e05555;--green:#4caf7d;
     }
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body {
-      background: var(--black);
-      color: var(--white);
-      font-family: 'Tajawal', sans-serif;
-      min-height: 100vh;
-    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{background:var(--black);color:var(--white);font-family:'Tajawal',sans-serif;min-height:100vh}
 
-    /* ── TOP BAR ── */
-    .topbar {
-      display:flex; align-items:center; justify-content:space-between;
-      padding:16px 28px;
-      background: var(--charcoal);
-      border-bottom: 1px solid var(--border);
-      position:sticky; top:0; z-index:50;
-    }
-    .topbar-brand {
-      font-family:'Cormorant Garamond',serif;
-      font-size:22px; font-style:italic; font-weight:300;
-      background:linear-gradient(135deg,var(--gold-light),var(--gold));
-      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-      background-clip:text;
-    }
-    .topbar-right { display:flex; align-items:center; gap:14px; }
-    .badge-admin {
-      font-size:10px; letter-spacing:3px; text-transform:uppercase;
-      color:var(--gold); border:1px solid rgba(201,168,76,0.3);
-      padding:4px 12px; border-radius:20px;
-    }
-    .btn-preview {
-      display:inline-flex; align-items:center; gap:7px;
-      font-family:'Tajawal',sans-serif; font-size:12px;
-      color:var(--black); background:var(--gold);
-      border:none; padding:8px 18px; border-radius:3px;
-      cursor:pointer; font-weight:700; letter-spacing:1px;
-      text-decoration:none; transition:all 0.2s;
-    }
-    .btn-preview:hover { background:var(--gold-light); }
+    .topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;background:var(--charcoal);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50}
+    .topbar-brand{font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;font-weight:300;background:linear-gradient(135deg,var(--gold-light),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .topbar-right{display:flex;align-items:center;gap:14px}
+    .badge-admin{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,168,76,.3);padding:4px 12px;border-radius:20px}
+    .btn-preview{display:inline-flex;align-items:center;gap:7px;font-family:'Tajawal',sans-serif;font-size:12px;color:var(--black);background:var(--gold);border:none;padding:8px 18px;border-radius:3px;cursor:pointer;font-weight:700;letter-spacing:1px;text-decoration:none;transition:all .2s}
+    .btn-preview:hover{background:var(--gold-light)}
 
-    /* ── LAYOUT ── */
-    .admin-layout {
-      display:grid;
-      grid-template-columns: 220px 1fr;
-      min-height: calc(100vh - 57px);
-    }
+    .admin-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 57px)}
+    .sidebar{background:var(--charcoal);border-left:1px solid var(--border);padding:28px 0}
+    .sidebar-section{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.2);padding:0 20px;margin-bottom:8px}
+    .sidebar-item{display:flex;align-items:center;gap:10px;padding:11px 20px;font-size:13px;color:var(--muted);cursor:pointer;border-right:2px solid transparent;transition:all .2s}
+    .sidebar-item:hover{color:var(--white);background:rgba(255,255,255,.04)}
+    .sidebar-item.active{color:var(--gold-light);border-right-color:var(--gold);background:rgba(201,168,76,.06)}
+    .sidebar-sep{height:1px;background:var(--border);margin:16px 0}
 
-    /* ── SIDEBAR ── */
-    .sidebar {
-      background:var(--charcoal);
-      border-left:1px solid var(--border);
-      padding:28px 0;
-    }
-    .sidebar-section {
-      font-size:9px; letter-spacing:4px; text-transform:uppercase;
-      color:rgba(255,255,255,0.2); padding:0 20px; margin-bottom:8px;
-    }
-    .sidebar-item {
-      display:flex; align-items:center; gap:10px;
-      padding:11px 20px; font-size:13px;
-      color:var(--muted); cursor:pointer;
-      border-right:2px solid transparent;
-      transition:all 0.2s;
-    }
-    .sidebar-item:hover { color:var(--white); background:rgba(255,255,255,0.04); }
-    .sidebar-item.active {
-      color:var(--gold-light);
-      border-right-color:var(--gold);
-      background:rgba(201,168,76,0.06);
-    }
-    .sidebar-sep { height:1px; background:var(--border); margin:16px 0; }
+    .main{padding:32px 28px;overflow-y:auto}
+    .panel{display:none}
+    .panel.active{display:block}
+    .panel-title{font-family:'Cormorant Garamond',serif;font-size:32px;font-style:italic;font-weight:300;margin-bottom:28px}
+    .panel-title span{color:var(--gold)}
 
-    /* ── MAIN ── */
-    .main { padding:32px 28px; overflow-y:auto; }
+    .card{background:var(--panel);border:1px solid var(--border);border-radius:4px;padding:24px;margin-bottom:20px}
+    .card-title{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
 
-    /* ── PANELS ── */
-    .panel { display:none; }
-    .panel.active { display:block; }
+    .field{margin-bottom:18px}
+    .field label{display:block;font-size:12px;color:var(--muted);margin-bottom:7px;letter-spacing:1px}
+    .field input,.field textarea,.field select{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:3px;color:var(--white);font-family:'Tajawal',sans-serif;font-size:14px;padding:11px 14px;transition:border-color .2s;outline:none}
+    .field input:focus,.field textarea:focus{border-color:rgba(201,168,76,.5)}
+    .field textarea{resize:vertical;min-height:80px}
+    .field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 
-    .panel-title {
-      font-family:'Cormorant Garamond',serif;
-      font-size:32px; font-style:italic; font-weight:300;
-      margin-bottom:28px; color:var(--white);
-    }
-    .panel-title span { color:var(--gold); }
+    .btn{display:inline-flex;align-items:center;gap:8px;font-family:'Tajawal',sans-serif;font-size:13px;padding:10px 22px;border-radius:3px;cursor:pointer;border:none;font-weight:700;letter-spacing:1px;transition:all .2s}
+    .btn-gold{background:var(--gold);color:var(--black)}
+    .btn-gold:hover{background:var(--gold-light)}
+    .btn-gold:disabled{opacity:.5;cursor:not-allowed}
+    .btn-outline{background:transparent;color:var(--gold);border:1px solid rgba(201,168,76,.4)}
+    .btn-outline:hover{background:rgba(201,168,76,.08)}
+    .btn-danger{background:rgba(224,85,85,.12);color:var(--red);border:1px solid rgba(224,85,85,.25)}
+    .btn-danger:hover{background:rgba(224,85,85,.22)}
+    .btn-sm{padding:6px 14px;font-size:12px}
 
-    /* ── CARD ── */
-    .card {
-      background:var(--panel);
-      border:1px solid var(--border);
-      border-radius:4px;
-      padding:24px;
-      margin-bottom:20px;
-    }
-    .card-title {
-      font-size:11px; letter-spacing:3px; text-transform:uppercase;
-      color:var(--gold); margin-bottom:18px;
-    }
+    .products-list{display:flex;flex-direction:column;gap:16px}
+    .product-item{border:1px solid var(--border);border-radius:3px;background:rgba(255,255,255,.02);overflow:hidden}
+    .product-item-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px}
+    .product-item-name{font-size:15px;font-weight:700}
+    .product-item-actions{display:flex;gap:8px}
+    .product-body{padding:18px;border-top:1px solid var(--border);display:none}
+    .product-body.open{display:block}
 
-    /* ── FORM ELEMENTS ── */
-    .field { margin-bottom:18px; }
-    .field label {
-      display:block; font-size:12px; color:var(--muted);
-      margin-bottom:7px; letter-spacing:1px;
-    }
-    .field input, .field textarea, .field select {
-      width:100%; background:rgba(255,255,255,0.04);
-      border:1px solid rgba(255,255,255,0.1);
-      border-radius:3px; color:var(--white);
-      font-family:'Tajawal',sans-serif; font-size:14px;
-      padding:11px 14px;
-      transition:border-color 0.2s;
-      outline:none;
-    }
-    .field input:focus, .field textarea:focus {
-      border-color:rgba(201,168,76,0.5);
-    }
-    .field textarea { resize:vertical; min-height:80px; }
-    .field-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .sizes-table{width:100%;border-collapse:collapse;margin-top:14px}
+    .sizes-table th{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);text-align:right;padding:8px 0;border-bottom:1px solid var(--border)}
+    .sizes-table td{padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+    .sizes-table input{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:2px;color:var(--white);font-family:'Tajawal',sans-serif;font-size:13px;padding:7px 10px;width:100%;outline:none}
+    .sizes-table input:focus{border-color:rgba(201,168,76,.4)}
 
-    /* ── BUTTONS ── */
-    .btn {
-      display:inline-flex; align-items:center; gap:8px;
-      font-family:'Tajawal',sans-serif; font-size:13px;
-      padding:10px 22px; border-radius:3px;
-      cursor:pointer; border:none; font-weight:700;
-      letter-spacing:1px; transition:all 0.2s;
-    }
-    .btn-gold { background:var(--gold); color:var(--black); }
-    .btn-gold:hover { background:var(--gold-light); }
-    .btn-outline {
-      background:transparent; color:var(--gold);
-      border:1px solid rgba(201,168,76,0.4);
-    }
-    .btn-outline:hover { background:rgba(201,168,76,0.08); }
-    .btn-danger { background:rgba(224,85,85,0.12); color:var(--red); border:1px solid rgba(224,85,85,0.25); }
-    .btn-danger:hover { background:rgba(224,85,85,0.22); }
-    .btn-sm { padding:6px 14px; font-size:12px; }
+    .toast{position:fixed;bottom:28px;left:28px;font-size:13px;font-weight:700;padding:12px 24px;border-radius:3px;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none;z-index:999}
+    .toast.success{background:var(--green);color:#fff}
+    .toast.error{background:var(--red);color:#fff}
+    .toast.show{opacity:1;transform:translateY(0)}
 
-    /* ── PRODUCTS LIST ── */
-    .products-list { display:flex; flex-direction:column; gap:16px; }
-    .product-item {
-      border:1px solid var(--border);
-      border-radius:3px;
-      background:rgba(255,255,255,0.02);
-      overflow:hidden;
-    }
-    .product-item-header {
-      display:flex; align-items:center; justify-content:space-between;
-      padding:14px 18px; cursor:pointer;
-      transition:background 0.2s;
-    }
-    .product-item-header:hover { background:rgba(255,255,255,0.03); }
-    .product-item-name { font-size:15px; font-weight:700; }
-    .product-item-actions { display:flex; gap:8px; }
-    .product-body { padding:18px; border-top:1px solid var(--border); display:none; }
-    .product-body.open { display:block; }
+    .stats-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:16px;margin-bottom:28px}
+    .stat-card{background:var(--panel);border:1px solid var(--border);border-radius:4px;padding:20px}
+    .stat-val{font-family:'Cormorant Garamond',serif;font-size:36px;font-style:italic;color:var(--gold-light);line-height:1}
+    .stat-lbl{font-size:11px;color:var(--muted);margin-top:6px;letter-spacing:1px}
 
-    /* ── SIZES TABLE ── */
-    .sizes-table { width:100%; border-collapse:collapse; margin-top:14px; }
-    .sizes-table th {
-      font-size:10px; letter-spacing:3px; text-transform:uppercase;
-      color:var(--muted); text-align:right; padding:8px 0;
-      border-bottom:1px solid var(--border);
-    }
-    .sizes-table td { padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
-    .sizes-table input {
-      background:rgba(255,255,255,0.04);
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:2px; color:var(--white);
-      font-family:'Tajawal',sans-serif; font-size:13px;
-      padding:7px 10px; width:100%; outline:none;
-    }
-    .sizes-table input:focus { border-color:rgba(201,168,76,0.4); }
-
-    /* ── SAVE TOAST ── */
-    .toast {
-      position:fixed; bottom:28px; left:28px;
-      background:var(--green); color:#fff;
-      font-size:13px; font-weight:700;
-      padding:12px 24px; border-radius:3px;
-      opacity:0; transform:translateY(10px);
-      transition:all 0.3s; pointer-events:none; z-index:999;
-    }
-    .toast.show { opacity:1; transform:translateY(0); }
-
-    /* ── STATS ── */
-    .stats-row { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:16px; margin-bottom:28px; }
-    .stat-card {
-      background:var(--panel); border:1px solid var(--border);
-      border-radius:4px; padding:20px;
-    }
-    .stat-val {
-      font-family:'Cormorant Garamond',serif;
-      font-size:36px; font-style:italic; color:var(--gold-light);
-      line-height:1;
-    }
-    .stat-lbl { font-size:11px; color:var(--muted); margin-top:6px; letter-spacing:1px; }
-
-    /* ── IMAGE PREVIEW ── */
-    .img-preview {
-      width:80px; height:80px; object-fit:cover;
-      border:1px solid var(--border); border-radius:3px;
-      margin-top:8px; display:block;
-    }
+    .saving-indicator{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--gold);opacity:0;transition:opacity .3s}
+    .saving-indicator.show{opacity:1}
+    .spin{animation:spin .8s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
 
     @media(max-width:600px){
-      .admin-layout { grid-template-columns:1fr; }
-      .sidebar { display:flex; flex-wrap:wrap; padding:12px; gap:4px; border-left:none; border-bottom:1px solid var(--border); }
-      .sidebar-section { display:none; }
-      .sidebar-item { border-right:none; border-bottom:2px solid transparent; border-radius:3px; padding:8px 12px; font-size:12px; }
-      .sidebar-item.active { border-bottom-color:var(--gold); border-right:none; }
-      .sidebar-sep { display:none; }
+      .admin-layout{grid-template-columns:1fr}
+      .sidebar{display:flex;flex-wrap:wrap;padding:12px;gap:4px;border-left:none;border-bottom:1px solid var(--border)}
+      .sidebar-section{display:none}
+      .sidebar-item{border-right:none;border-radius:3px;padding:8px 12px;font-size:12px}
+      .sidebar-item.active{border-bottom:2px solid var(--gold);border-right:none}
+      .sidebar-sep{display:none}
     }
   </style>
 </head>
 <body>
 
-<!-- TOP BAR -->
 <div class="topbar">
   <span class="topbar-brand">Mozounai</span>
   <div class="topbar-right">
-    <span class="badge-admin">⚙ Admin Panel</span>
-    <a class="btn-preview" href="index.html" target="_blank">👁 معاينة الموقع</a>
+    <span class="saving-indicator" id="savingIndicator">
+      <svg class="spin" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 11-6.219-8.56"/></svg>
+      جاري الحفظ...
+    </span>
+    <span class="badge-admin">⚙ Admin</span>
+    <a class="btn-preview" href="index.html" target="_blank">👁 معاينة</a>
   </div>
 </div>
 
-<!-- LAYOUT -->
 <div class="admin-layout">
-
-  <!-- SIDEBAR -->
   <aside class="sidebar">
     <p class="sidebar-section">الإدارة</p>
     <div class="sidebar-item active" data-panel="overview">📊 نظرة عامة</div>
     <div class="sidebar-item" data-panel="products">🛍 المنتجات</div>
-    <div class="sidebar-item" data-panel="general">⚙️ الإعدادات العامة</div>
+    <div class="sidebar-item" data-panel="general">⚙️ الإعدادات</div>
     <div class="sidebar-sep"></div>
     <p class="sidebar-section">أدوات</p>
     <div class="sidebar-item" data-panel="reset">🔄 إعادة تعيين</div>
   </aside>
 
-  <!-- MAIN -->
   <main class="main">
 
-    <!-- ── OVERVIEW ── -->
+    <!-- OVERVIEW -->
     <div class="panel active" id="panel-overview">
       <h2 class="panel-title">مرحباً، <span>Admin</span> 👋</h2>
       <div class="stats-row" id="statsRow"></div>
       <div class="card">
-        <p class="card-title">آخر التغييرات</p>
-        <p style="font-size:13px;color:var(--muted)" id="lastSaved">لم يتم الحفظ بعد</p>
+        <p class="card-title">آخر تحديث</p>
+        <p style="font-size:13px;color:var(--muted)" id="lastSaved">جاري التحميل...</p>
       </div>
       <div class="card">
-        <p class="card-title">رابط واتساب الحالي</p>
-        <a id="waPreview" href="#" target="_blank" style="font-size:13px;color:var(--gold-light);word-break:break-all"></a>
+        <p class="card-title">رابط الموقع</p>
+        <a href="https://mrotako1k.github.io/Mozounai" target="_blank" style="font-size:13px;color:var(--gold-light)">
+          https://mrotako1k.github.io/Mozounai
+        </a>
       </div>
     </div>
 
-    <!-- ── PRODUCTS ── -->
+    <!-- PRODUCTS -->
     <div class="panel" id="panel-products">
       <h2 class="panel-title">إدارة <span>المنتجات</span></h2>
       <div style="margin-bottom:20px">
@@ -284,38 +146,28 @@
       <div class="products-list" id="productsList"></div>
     </div>
 
-    <!-- ── GENERAL ── -->
+    <!-- GENERAL -->
     <div class="panel" id="panel-general">
       <h2 class="panel-title">الإعدادات <span>العامة</span></h2>
       <div class="card">
         <p class="card-title">معلومات البراند</p>
-        <div class="field">
-          <label>اسم البراند</label>
-          <input type="text" id="gBrandName" placeholder="Mozounai" />
-        </div>
-        <div class="field">
-          <label>شعار تحت الاسم</label>
-          <input type="text" id="gTagline" placeholder="أناقة مغربية أصيلة" />
-        </div>
+        <div class="field"><label>اسم البراند</label><input type="text" id="gBrandName"/></div>
+        <div class="field"><label>شعار تحت الاسم</label><input type="text" id="gTagline"/></div>
       </div>
       <div class="card">
         <p class="card-title">معلومات التواصل</p>
-        <div class="field">
-          <label>رقم الهاتف (واتساب)</label>
-          <input type="text" id="gPhone" placeholder="0614130355" dir="ltr" />
-        </div>
+        <div class="field"><label>رقم الهاتف (واتساب)</label><input type="text" id="gPhone" dir="ltr"/></div>
       </div>
-      <button class="btn btn-gold" id="saveGeneralBtn">💾 حفظ الإعدادات</button>
+      <button class="btn btn-gold" id="saveGeneralBtn">💾 حفظ على GitHub</button>
     </div>
 
-    <!-- ── RESET ── -->
+    <!-- RESET -->
     <div class="panel" id="panel-reset">
       <h2 class="panel-title">إعادة <span>تعيين</span></h2>
       <div class="card">
-        <p class="card-title">خطر!</p>
+        <p class="card-title">⚠️ خطر!</p>
         <p style="font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.8">
-          هذا الإجراء سيمحو كل التغييرات ويرجع للإعدادات الافتراضية.<br/>
-          هذا الإجراء لا يمكن التراجع عنه.
+          هذا الإجراء سيمحو كل التغييرات ويرجع للإعدادات الافتراضية على GitHub.<br/>لا يمكن التراجع عنه.
         </p>
         <button class="btn btn-danger" id="resetBtn">🗑 إعادة تعيين كل شيء</button>
       </div>
@@ -324,84 +176,130 @@
   </main>
 </div>
 
-<div class="toast" id="toast">✓ تم الحفظ بنجاح!</div>
+<div class="toast" id="toast"></div>
 
 <script>
-// ── DEFAULTS ──
-const DEFAULT = {
-  brandName: "Mozounai",
-  phone: "0614130355",
-  heroTagline: "أناقة مغربية أصيلة",
-  products: [
-    {
-      id: 1,
-      name: "موزون أنيق بالترتر",
-      desc: "موزون جوج متر وزيادة، مصنوع يدوياً بخيوط فاخرة وترتر فضي لامع",
-      badge: "الأكثر طلباً",
-      image: "1000872588.png",
-      sizes: [
-        { label: "الغليض 📏", price: "219" },
-        { label: "الموايان 📏", price: "129" }
-      ]
-    }
-  ]
+// ══════════════════════════════════════
+// GITHUB CONFIG
+// ══════════════════════════════════════
+const GITHUB_TOKEN = "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";
+const GITHUB_REPO  = "MrOtako1k/Mozounai";
+const DATA_FILE    = "data.json";
+const API_URL      = `https://api.github.com/repos/${GITHUB_REPO}/contents/${DATA_FILE}`;
+
+const DEFAULT_DATA = {
+  brandName:"Mozounai", phone:"0614130355", heroTagline:"أناقة مغربية أصيلة",
+  products:[{
+    id:1, name:"موزون أنيق بالترتر",
+    desc:"موزون جوج متر وزيادة، مصنوع يدوياً بخيوط فاخرة وترتر فضي لامع",
+    badge:"الأكثر طلباً", image:"1000872588.png",
+    sizes:[{label:"الغليض 📏",price:"219"},{label:"الموايان 📏",price:"129"}]
+  }]
 };
 
-function load() {
-  try { return JSON.parse(localStorage.getItem('mozounai_data')) || structuredClone(DEFAULT); }
-  catch(e) { return structuredClone(DEFAULT); }
-}
-function save(data) {
-  localStorage.setItem('mozounai_data', JSON.stringify(data));
-  localStorage.setItem('mozounai_saved', new Date().toLocaleString('ar-MA'));
-  showToast();
-  renderOverview(data);
-}
-function showToast() {
+let data = structuredClone(DEFAULT_DATA);
+let fileSHA = null; // GitHub needs the SHA to update a file
+
+// ── TOAST ──
+function showToast(msg, type='success') {
   const t = document.getElementById('toast');
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 2500);
+  t.textContent = msg;
+  t.className = `toast ${type} show`;
+  setTimeout(()=>t.classList.remove('show'), 3000);
 }
 
-let data = load();
+function setSaving(show) {
+  document.getElementById('savingIndicator').classList.toggle('show', show);
+}
 
-// ── SIDEBAR NAVIGATION ──
-document.querySelectorAll('.sidebar-item').forEach(item => {
-  item.addEventListener('click', () => {
+// ── FETCH FROM GITHUB ──
+async function fetchData() {
+  try {
+    const res = await fetch(API_URL + '?t=' + Date.now(), {
+      headers:{ 'Authorization':'token '+GITHUB_TOKEN, 'Accept':'application/vnd.github.v3+json' }
+    });
+    if (res.status === 404) {
+      // file doesn't exist yet, use defaults and create it
+      await saveToGitHub(DEFAULT_DATA, null);
+      return DEFAULT_DATA;
+    }
+    if (!res.ok) throw new Error('fetch failed');
+    const file = await res.json();
+    fileSHA = file.sha;
+    return JSON.parse(atob(file.content.replace(/\n/g,'')));
+  } catch(e) {
+    showToast('⚠️ تعذر الاتصال بـ GitHub', 'error');
+    return structuredClone(DEFAULT_DATA);
+  }
+}
+
+// ── SAVE TO GITHUB ──
+async function saveToGitHub(d, sha) {
+  setSaving(true);
+  try {
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(d, null, 2))));
+    const body = {
+      message: 'تحديث بيانات الموقع 🛍',
+      content: content,
+      ...(sha ? { sha } : {})
+    };
+    const res = await fetch(API_URL, {
+      method: 'PUT',
+      headers:{
+        'Authorization':'token '+GITHUB_TOKEN,
+        'Accept':'application/vnd.github.v3+json',
+        'Content-Type':'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.message);
+    }
+    const result = await res.json();
+    fileSHA = result.content.sha;
+    setSaving(false);
+    showToast('✓ تم الحفظ على GitHub!', 'success');
+    renderOverview(d);
+    return true;
+  } catch(e) {
+    setSaving(false);
+    showToast('❌ فشل الحفظ: ' + e.message, 'error');
+    return false;
+  }
+}
+
+// ── SIDEBAR ──
+document.querySelectorAll('.sidebar-item').forEach(item=>{
+  item.addEventListener('click',()=>{
     document.querySelectorAll('.sidebar-item').forEach(i=>i.classList.remove('active'));
     document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
     item.classList.add('active');
-    document.getElementById('panel-' + item.dataset.panel).classList.add('active');
-    if(item.dataset.panel === 'products') renderProductsList();
-    if(item.dataset.panel === 'general') fillGeneral();
+    document.getElementById('panel-'+item.dataset.panel).classList.add('active');
+    if(item.dataset.panel==='products') renderProductsList();
+    if(item.dataset.panel==='general') fillGeneral();
   });
 });
 
 // ── OVERVIEW ──
 function renderOverview(d) {
-  document.getElementById('statsRow').innerHTML = `
+  document.getElementById('statsRow').innerHTML=`
     <div class="stat-card"><div class="stat-val">${d.products.length}</div><div class="stat-lbl">منتج</div></div>
     <div class="stat-card"><div class="stat-val">${d.products.reduce((a,p)=>a+p.sizes.length,0)}</div><div class="stat-lbl">حجم</div></div>
-    <div class="stat-card"><div class="stat-val" style="font-size:20px">${d.brandName}</div><div class="stat-lbl">البراند</div></div>
+    <div class="stat-card"><div class="stat-val" style="font-size:18px;margin-top:4px">${d.brandName}</div><div class="stat-lbl">البراند</div></div>
   `;
-  const phone = d.phone.replace(/\s/g,'').replace(/^0/,'');
-  const msg = encodeURIComponent('سلام عليكم 👋 بغيت نطلب من '+d.brandName);
-  const waEl = document.getElementById('waPreview');
-  waEl.href = `https://wa.me/212${phone}?text=${msg}`;
-  waEl.textContent = `wa.me/212${phone}`;
-  const ls = localStorage.getItem('mozounai_saved');
-  if(ls) document.getElementById('lastSaved').textContent = 'آخر حفظ: ' + ls;
+  document.getElementById('lastSaved').textContent = 'SHA: ' + (fileSHA ? fileSHA.slice(0,8)+'...' : 'جديد');
 }
 
 // ── PRODUCTS ──
 function renderProductsList() {
   const list = document.getElementById('productsList');
-  list.innerHTML = '';
-  data.products.forEach((p, pi) => {
-    const div = document.createElement('div');
-    div.className = 'product-item';
-    div.innerHTML = `
-      <div class="product-item-header" data-pi="${pi}">
+  list.innerHTML='';
+  data.products.forEach((p,pi)=>{
+    const div=document.createElement('div');
+    div.className='product-item';
+    div.innerHTML=`
+      <div class="product-item-header">
         <span class="product-item-name">${p.name}</span>
         <div class="product-item-actions">
           <button class="btn btn-outline btn-sm" data-action="toggle" data-pi="${pi}">✏️ تعديل</button>
@@ -410,23 +308,14 @@ function renderProductsList() {
       </div>
       <div class="product-body" id="pb-${pi}">
         <div class="field-row">
-          <div class="field">
-            <label>اسم المنتج</label>
-            <input type="text" id="p-name-${pi}" value="${p.name}" />
-          </div>
-          <div class="field">
-            <label>شارة (اختياري)</label>
-            <input type="text" id="p-badge-${pi}" value="${p.badge||''}" placeholder="الأكثر طلباً" />
-          </div>
+          <div class="field"><label>اسم المنتج</label><input type="text" id="p-name-${pi}" value="${p.name}"/></div>
+          <div class="field"><label>شارة (اختياري)</label><input type="text" id="p-badge-${pi}" value="${p.badge||''}" placeholder="الأكثر طلباً"/></div>
         </div>
-        <div class="field">
-          <label>الوصف</label>
-          <textarea id="p-desc-${pi}">${p.desc}</textarea>
-        </div>
+        <div class="field"><label>الوصف</label><textarea id="p-desc-${pi}">${p.desc}</textarea></div>
         <div class="field">
           <label>اسم ملف الصورة</label>
-          <input type="text" id="p-image-${pi}" value="${p.image}" placeholder="product.png" dir="ltr" />
-          <img src="${p.image}" class="img-preview" id="p-imgprev-${pi}" onerror="this.style.display='none'" />
+          <input type="text" id="p-image-${pi}" value="${p.image}" placeholder="product.png" dir="ltr"/>
+          <small style="color:var(--muted);font-size:11px;margin-top:4px;display:block">⚠️ الملف لازم يكون مرفوع في الـ repo</small>
         </div>
         <div class="field">
           <label>الأحجام والأسعار</label>
@@ -436,120 +325,98 @@ function renderProductsList() {
           </table>
           <button class="btn btn-outline btn-sm" style="margin-top:10px" data-action="addsize" data-pi="${pi}">+ إضافة حجم</button>
         </div>
-        <button class="btn btn-gold" data-action="saveproduct" data-pi="${pi}">💾 حفظ المنتج</button>
-      </div>
-    `;
+        <button class="btn btn-gold" data-action="saveproduct" data-pi="${pi}">💾 حفظ على GitHub</button>
+      </div>`;
     list.appendChild(div);
     renderSizes(pi);
   });
-
   list.addEventListener('click', handleProductAction);
 }
 
 function renderSizes(pi) {
-  const tbody = document.getElementById(`sizes-tbody-${pi}`);
+  const tbody=document.getElementById(`sizes-tbody-${pi}`);
   if(!tbody) return;
-  tbody.innerHTML = '';
-  data.products[pi].sizes.forEach((s, si) => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td><input type="text" value="${s.label}" id="s-lbl-${pi}-${si}" /></td>
-      <td><input type="text" value="${s.price}" id="s-price-${pi}-${si}" dir="ltr" /></td>
-      <td><button class="btn btn-danger btn-sm" data-action="delsize" data-pi="${pi}" data-si="${si}">✕</button></td>
-    `;
+  tbody.innerHTML='';
+  data.products[pi].sizes.forEach((s,si)=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`
+      <td><input type="text" value="${s.label}" id="s-lbl-${pi}-${si}"/></td>
+      <td><input type="text" value="${s.price}" id="s-price-${pi}-${si}" dir="ltr"/></td>
+      <td><button class="btn btn-danger btn-sm" data-action="delsize" data-pi="${pi}" data-si="${si}">✕</button></td>`;
     tbody.appendChild(tr);
   });
 }
 
 function handleProductAction(e) {
-  const btn = e.target.closest('[data-action]');
+  const btn=e.target.closest('[data-action]');
   if(!btn) return;
-  const pi = parseInt(btn.dataset.pi);
-  const si = parseInt(btn.dataset.si);
-  const action = btn.dataset.action;
-
-  if(action === 'toggle') {
-    const body = document.getElementById(`pb-${pi}`);
+  const pi=parseInt(btn.dataset.pi);
+  const si=parseInt(btn.dataset.si);
+  const action=btn.dataset.action;
+  if(action==='toggle'){
+    const body=document.getElementById(`pb-${pi}`);
     body.classList.toggle('open');
-    btn.textContent = body.classList.contains('open') ? '✖ إغلاق' : '✏️ تعديل';
+    btn.textContent=body.classList.contains('open')?'✖ إغلاق':'✏️ تعديل';
   }
-  else if(action === 'delete') {
-    if(confirm('تحذف هذا المنتج؟')) {
-      data.products.splice(pi, 1);
-      save(data);
-      renderProductsList();
+  else if(action==='delete'){
+    if(confirm('تحذف هذا المنتج؟')){
+      data.products.splice(pi,1);
+      saveToGitHub(data, fileSHA).then(ok=>{ if(ok) renderProductsList(); });
     }
   }
-  else if(action === 'addsize') {
-    data.products[pi].sizes.push({ label: 'حجم جديد', price: '0' });
+  else if(action==='addsize'){
+    data.products[pi].sizes.push({label:'حجم جديد',price:'0'});
     renderSizes(pi);
   }
-  else if(action === 'delsize') {
-    data.products[pi].sizes.splice(si, 1);
+  else if(action==='delsize'){
+    data.products[pi].sizes.splice(si,1);
     renderSizes(pi);
   }
-  else if(action === 'saveproduct') {
-    // collect fields
+  else if(action==='saveproduct'){
     data.products[pi].name  = document.getElementById(`p-name-${pi}`).value;
     data.products[pi].badge = document.getElementById(`p-badge-${pi}`).value;
     data.products[pi].desc  = document.getElementById(`p-desc-${pi}`).value;
     data.products[pi].image = document.getElementById(`p-image-${pi}`).value;
-    // collect sizes
-    data.products[pi].sizes = data.products[pi].sizes.map((s,si2) => ({
-      label: document.getElementById(`s-lbl-${pi}-${si2}`)?.value || s.label,
-      price: document.getElementById(`s-price-${pi}-${si2}`)?.value || s.price
+    data.products[pi].sizes = data.products[pi].sizes.map((s,si2)=>({
+      label: document.getElementById(`s-lbl-${pi}-${si2}`)?.value||s.label,
+      price: document.getElementById(`s-price-${pi}-${si2}`)?.value||s.price
     }));
-    // update image preview name
-    document.getElementById(`p-imgprev-${pi}`).src = data.products[pi].image;
     document.querySelector(`[data-pi="${pi}"] .product-item-name`).textContent = data.products[pi].name;
-    save(data);
+    saveToGitHub(data, fileSHA);
   }
 }
 
-document.getElementById('addProductBtn').addEventListener('click', () => {
-  data.products.push({
-    id: Date.now(),
-    name: 'منتج جديد',
-    desc: 'وصف المنتج هنا',
-    badge: '',
-    image: '',
-    sizes: [{ label: 'الحجم الأول', price: '100' }]
-  });
-  save(data);
-  renderProductsList();
-  // scroll to new
-  setTimeout(() => {
-    const items = document.querySelectorAll('.product-item');
-    items[items.length-1]?.scrollIntoView({ behavior:'smooth' });
-  }, 100);
+document.getElementById('addProductBtn').addEventListener('click',()=>{
+  data.products.push({id:Date.now(),name:'منتج جديد',desc:'وصف المنتج',badge:'',image:'',sizes:[{label:'الحجم',price:'100'}]});
+  saveToGitHub(data, fileSHA).then(ok=>{ if(ok) renderProductsList(); });
 });
 
 // ── GENERAL ──
-function fillGeneral() {
+function fillGeneral(){
   document.getElementById('gBrandName').value = data.brandName;
   document.getElementById('gTagline').value   = data.heroTagline;
   document.getElementById('gPhone').value     = data.phone;
 }
-document.getElementById('saveGeneralBtn').addEventListener('click', () => {
+document.getElementById('saveGeneralBtn').addEventListener('click',()=>{
   data.brandName   = document.getElementById('gBrandName').value;
   data.heroTagline = document.getElementById('gTagline').value;
   data.phone       = document.getElementById('gPhone').value;
-  save(data);
+  saveToGitHub(data, fileSHA);
 });
 
 // ── RESET ──
-document.getElementById('resetBtn').addEventListener('click', () => {
-  if(confirm('واش متأكد؟ هذا مرجعش!')) {
-    localStorage.removeItem('mozounai_data');
-    localStorage.removeItem('mozounai_saved');
-    data = structuredClone(DEFAULT);
-    showToast();
-    location.reload();
+document.getElementById('resetBtn').addEventListener('click',()=>{
+  if(confirm('واش متأكد؟ هذا مرجعش!')){
+    data = structuredClone(DEFAULT_DATA);
+    saveToGitHub(data, fileSHA).then(ok=>{ if(ok) { renderProductsList(); fillGeneral(); } });
   }
 });
 
 // ── INIT ──
-renderOverview(data);
+fetchData().then(d=>{
+  data=d;
+  renderOverview(d);
+});
 </script>
 </body>
 </html>
