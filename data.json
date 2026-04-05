@@ -2,6 +2,9 @@
   "brandName": "Mozounai",
   "phone": "0614130355",
   "heroTagline": "أناقة مغربية أصيلة",
+  "promoBadge": "",
+  "deliveryDays": "24-48",
+  "footerNote": "صنع يدوي بالمغرب",
   "products": [
     {
       "id": 1,
